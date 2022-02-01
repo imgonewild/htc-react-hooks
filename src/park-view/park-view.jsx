@@ -1,22 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import parksData from "../assets/parks.json";
 import "./park-view.scss";
 
 function ParkView() {
-    // let loading = false;
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const parks = parksData;
     const { index } = useParams();
-    const [parks, setParks] = useState(parksData);
+    const [loading, setLoading] = useState(true);
     const data = parks[index];
 
     let parkName = data.pm_name;
     let desc = data.pm_overview;
     let location = data.pm_location;
     let transit = data.pm_transit;
-    // setLoading(true);
-    // console.log(id);
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
+
     function backClick() {
         navigate("/");
     }

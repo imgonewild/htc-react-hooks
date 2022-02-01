@@ -2,23 +2,26 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import parksData from "../assets/parks.json";
 import "./park-list.scss";
+
 function ParkList() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        setLoading(false);
-    }, []);
-
-    const parks = parksData;
     const [currPage, setCurrPage] = useState(1);
+    const parks = parksData;
     const cardPerPage = 12;
     const len = parks.length / cardPerPage;
     let totalPage;
+
     if (len % 1 === 0) {
         totalPage = len;
     } else {
         totalPage = Math.floor(len) + 1;
     }
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
+
     function loadPage(action) {
         // this.highlightIndex = [];
         // this.input.nativeElement.value = '';
@@ -39,11 +42,13 @@ function ParkList() {
 
     return (
         <>
-            <div className="wrapper">
+            <div className="park-list-wrapper">
                 <header className="header">
                     <div className="text-center title">台北市公園資料</div>
                 </header>
+
                 {loading === true && <div className="loader"></div>}
+
                 <div className="container">
                     <input
                         type="text"
@@ -74,12 +79,12 @@ function ParkList() {
                     </div>
                 </div>
 
-                <footer className="text-center">
+                <footer className="footer text-center">
                     <span
                         className={currPage !== 1 ? "start-page" : ""}
                         onClick={() => loadPage("start")}
                     >
-                        {"|<"}
+                        {"|< "}
                     </span>
 
                     <span className="tab"></span>
@@ -93,7 +98,7 @@ function ParkList() {
 
                     <span className="tab"></span>
 
-                    {`${currPage}/${totalPage}`}
+                    {` ${currPage}/${totalPage} `}
 
                     <span className="tab"></span>
 
@@ -110,7 +115,7 @@ function ParkList() {
                         className={currPage !== totalPage ? "end-page" : ""}
                         onClick={() => loadPage("end")}
                     >
-                        {">|"}
+                        {" >|"}
                     </span>
                 </footer>
             </div>
