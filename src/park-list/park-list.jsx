@@ -17,7 +17,8 @@ function ParkList() {
     }, []);
 
     let totalPage;
-    let parks = parksData;
+    //let parks = parksData;
+    const [parks, setParks] = useState(parksData);
     const cardPerPage = 12;
     const len = parks.length / cardPerPage;
 
@@ -41,13 +42,29 @@ function ParkList() {
         }
     }
 
-    function cardClick(index) {
-        navigate("/park-view/" + index);
-    }
-
     function searchOnchange() {
         setHighlightIndex([]);
         if (search === "") return;
+
+        // setParks(() =>
+        //     parks.filter((obj, i) => {
+        //         if (
+        //             obj["pm_name"].includes(search) ||
+        //             obj["pm_construction"].includes(search) ||
+        //             obj["pm_overview"].includes(search)
+        //         ) {
+        //             setHighlightIndex((highlightIndex) => [
+        //                 ...highlightIndex,
+        //                 i,
+        //             ]);
+        //             i++;
+        //             return obj;
+        //         }
+        //         i++;
+        //         return false;
+        //     })
+        // );
+
         const subParks = parks.slice((currPage - 1) * 12, currPage * 12);
         subParks.filter((obj, i) => {
             if (
@@ -60,8 +77,9 @@ function ParkList() {
                 return obj;
             }
             i++;
+            return false;
         });
-        // console.log(search, highlightIndex, highlightIndex.includes(0));
+        // console.log(highlightIndex);
     }
 
     return (
@@ -95,7 +113,11 @@ function ParkList() {
                                     }
                                     key={index}
                                     onClick={() =>
-                                        cardClick((currPage - 1) * 12 + index)
+                                        navigate(
+                                            `/park-view/${
+                                                (currPage - 1) * 12 + index
+                                            }`
+                                        )
                                     }
                                 >
                                     <div className="header">
