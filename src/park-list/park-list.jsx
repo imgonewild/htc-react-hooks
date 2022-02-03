@@ -11,32 +11,31 @@ function ParkList() {
     const [loading, setLoading] = useState(true);
     const [currPage, setCurrPage] = useState(1);
     const [totalPage, setTotalPage] = useState();
+    const [isGlobalAction, setIsGlobalAction] = useState(false);
     const [highlightIndex, setHighlightIndex] = useState([]);
     const [search, setSearch] = useState("");
     const [isSearch, setIsSearch] = useState(false);
     const [searchMethod, setSearchMethod] = useState("local");
     const [parks, setParks] = useState(parksData);
     const cardPerPage = 12;
-    const len = parks.length / cardPerPage;
+    const len = parksData.length / cardPerPage;
 
     useDebouncedEffect(() => searchOnchange(), [search], 250);
 
     useEffect(() => {
         setLoading(false);
         const search_key = localStorage.getItem("search_key");
-        if (search_key !== null) setSearch(search_key);
-
         const search_method = localStorage.getItem("search_method");
-        if (search_method !== null) setSearchMethod(search_method);
-
         const currentPage = localStorage.getItem("current_page");
+
+        if (search_key !== null) setSearch(search_key);
+        if (search_method !== null) setSearchMethod(search_method);
         if (currentPage !== null) setCurrPage(currentPage);
 
-        if (len % 1 === 0) {
-            setTotalPage(len);
-        } else {
-            setTotalPage(Math.floor(len) + 1);
-        }
+        if (search_method === "global" && currentPage !== 1)
+            setIsGlobalAction(true);
+
+        setDefaultTotalPage(len);
     }, []);
 
     useEffect(() => {
@@ -56,6 +55,7 @@ function ParkList() {
             return;
         }
         setHighlightIndex([]);
+        setIsGlobalAction(true);
     }
 
     function searchOnchange() {
@@ -65,32 +65,16 @@ function ParkList() {
             localStorage.removeItem("current_page");
             setParks(() => parksData);
             setIsSearch(false);
+            setDefaultTotalPage(len);
             return;
         }
 
         if (searchMethod === "local") {
             setIsSearch(true);
-            const subParks = parksData.slice(
-                (currPage - 1) * 12,
-                currPage * 12
-            );
-            subParks.filter((obj, i) => {
-                if (
-                    obj["pm_name"].includes(search) ||
-                    obj["pm_construction"].includes(search)
-                ) {
-                    setHighlightIndex((highlightIndex) => [
-                        ...highlightIndex,
-                        i,
-                    ]);
-                    return obj;
-                }
-            });
-        } else if (searchMethod === "global") {
-            setIsSearch(true);
-            setCurrPage(1);
-            setParks(() =>
-                parksData.filter((obj, i) => {
+            setIsGlobalAction(false);
+            parksData
+                .slice((currPage - 1) * 12, currPage * 12)
+                .filter((obj, i) => {
                     if (
                         obj["pm_name"].includes(search) ||
                         obj["pm_construction"].includes(search)
@@ -101,10 +85,49 @@ function ParkList() {
                         ]);
                         return obj;
                     }
-                    return false;
-                })
-            );
+                });
+            setDefaultTotalPage(len);
+        } else if (searchMethod === "global") {
+            setIsSearch(true);
+            if (currPage !== 1 && isGlobalAction === false) setCurrPage(1);
+            const globalData = parksData.filter((obj, i) => {
+                if (
+                    obj["pm_name"].includes(search) ||
+                    obj["pm_construction"].includes(search)
+                ) {
+                    setHighlightIndex((highlightIndex) => [
+                        ...highlightIndex,
+                        i,
+                    ]);
+                    return obj;
+                }
+                return false;
+            });
+            setParks(() => globalData);
+
+            const len = globalData.length / cardPerPage;
+            setDefaultTotalPage(len);
         }
+    }
+
+    function setDefaultTotalPage(len) {
+        if (len % 1 === 0) {
+            setTotalPage(len);
+        } else {
+            setTotalPage(Math.floor(len) + 1);
+        }
+    }
+
+    function cardClick(method, index) {
+        localStorage.setItem("current_page", currPage);
+        localStorage.setItem("search_key", search);
+        localStorage.setItem("search_method", searchMethod);
+        if (method === "local")
+            navigate(`/park-view/${(currPage - 1) * 12 + index}`);
+        else if (method === "global")
+            navigate(
+                `/park-view/${highlightIndex[(currPage - 1) * 12 + index]}`
+            );
     }
 
     return (
@@ -123,12 +146,11 @@ function ParkList() {
                                     searchMethod === "global" ? true : false
                                 }
                                 onChange={() => {
-                                    setSearchMethod(() => {
-                                        if (searchMethod === "local")
-                                            return "global";
-                                        else if (searchMethod === "global")
-                                            return "local";
-                                    });
+                                    setSearchMethod(() =>
+                                        searchMethod === "local"
+                                            ? "global"
+                                            : "local"
+                                    );
                                 }}
                             />
                             <div
@@ -158,26 +180,9 @@ function ParkList() {
                                                 : "card no-highlight"
                                         }
                                         key={index}
-                                        onClick={() => {
-                                            console.log(highlightIndex);
-                                            localStorage.setItem(
-                                                "current_page",
-                                                currPage
-                                            );
-                                            localStorage.setItem(
-                                                "search_key",
-                                                search
-                                            );
-                                            localStorage.setItem(
-                                                "search_method",
-                                                searchMethod
-                                            );
-                                            navigate(
-                                                `/park-view/${
-                                                    (currPage - 1) * 12 + index
-                                                }`
-                                            );
-                                        }}
+                                        onClick={() =>
+                                            cardClick("local", index)
+                                        }
                                     >
                                         <div className="header">
                                             <div className="title">
@@ -204,25 +209,9 @@ function ParkList() {
                                                 : "card no-highlight"
                                         }
                                         key={index}
-                                        onClick={() => {
-                                            localStorage.setItem(
-                                                "current_page",
-                                                currPage
-                                            );
-                                            localStorage.setItem(
-                                                "search_key",
-                                                search
-                                            );
-                                            localStorage.setItem(
-                                                "search_method",
-                                                searchMethod
-                                            );
-                                            navigate(
-                                                `/park-view/${
-                                                    highlightIndex[index] - 1
-                                                }`
-                                            );
-                                        }}
+                                        onClick={() =>
+                                            cardClick("global", index)
+                                        }
                                     >
                                         <div className="header">
                                             <div className="title">
