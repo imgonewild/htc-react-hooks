@@ -34,7 +34,7 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
 
 # Difficulties
 - learning and coding timeline
-  - 1/29, 1/30, 1/31 read official react hooks documents, react hooks blogs and watched react hook youtube tutorial videos
+  - 1/29, 1/30, 1/31 read official react hooks documents, blogs and watched youtube tutorial videos
   - 2/1, 2/2, 2/3 rewrote [angular project](https://github.com/imgonewild/htc) to react hooks
   
 - react-leaflet can't show marker icon correctly
@@ -42,7 +42,7 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
   
 - Won't able to go to next page while using global search
   - (Why?) Because it would redirect to first page while using global search.
-  - (Solution) Added `isGlobalAction` variable to determine if user change page in global search to solve this problem
+  - (Solution) Added `isGlobalAction` variable to determine if user change page in global search.
 
 # Requirements
 
@@ -56,11 +56,11 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
   - Display two data per line when window size < 500px
 
 - Data information
-  - Title: pm_name(Park name)
-  - Description: pm_overview(Park overview)
-  - Remark: pm_construction(Park constructed year)
-  - Location: pm_location(Park location)
-  - Transit: pm_transit(Ways to transit to park)
+  - Title: pm_name (Park name)
+  - Description: pm_overview (Park overview)
+  - Remark: pm_construction (Park constructed year)
+  - Location: pm_location (Park location)
+  - Transit: pm_transit (Ways to transit to park)
 
 - Pagination function
   - Click card and redirect to detail view page which including data information and use park id as index
@@ -75,7 +75,6 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
   - Difficulties
 
 - Use git version control and upload project to GitHub
-
 - Bonus:
   - Use embedded map(OpenStreetMap)
   - local search function
