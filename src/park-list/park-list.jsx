@@ -122,9 +122,10 @@ function ParkList() {
         localStorage.setItem("current_page", currPage);
         localStorage.setItem("search_key", search);
         localStorage.setItem("search_method", searchMethod);
-        if (method === "local")
+
+        if (method === "local" || (method === "global" && isSearch === false))
             navigate(`/park-view/${(currPage - 1) * 12 + index}`);
-        else if (method === "global")
+        else if (method === "global" && isSearch === true)
             navigate(
                 `/park-view/${highlightIndex[(currPage - 1) * 12 + index]}`
             );
@@ -146,11 +147,17 @@ function ParkList() {
                                     searchMethod === "global" ? true : false
                                 }
                                 onChange={() => {
-                                    setSearchMethod(() =>
-                                        searchMethod === "local"
-                                            ? "global"
-                                            : "local"
-                                    );
+                                    setSearchMethod(() => {
+                                        const method =
+                                            searchMethod === "local"
+                                                ? "global"
+                                                : "local";
+                                        localStorage.setItem(
+                                            "search_method",
+                                            method
+                                        );
+                                        return method;
+                                    });
                                 }}
                             />
                             <div
