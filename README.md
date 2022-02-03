@@ -24,12 +24,13 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
 
 - Verify the Detail View page field data and JSON are correct
 
-- **Extra features:**
-  - **(Bonus) Embedded map(Leaflet)**
-  - **(Bonus) Local search function**
-  - **Local/Global search switch and function**
-  - **Save and load user activities in localStorage**
-  - **Loading bar**
+# **Extra features**
+  - **(Bonus)** Embedded map(Leaflet)
+  - **(Bonus)** Local search function
+  - Local/Global search switch and function
+  - Debounce for search input
+  - Store user activities in localStorage
+  - Show Loading bar while fetching json data
 
 # Difficulties
 - learning and coding timeline
