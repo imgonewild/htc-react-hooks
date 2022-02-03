@@ -20,7 +20,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app w
 
 - Verify that the JSON data is correct
 
-- Verify RWD requirements
+- Verify RWD requirement
 
 - Verify the Detail View page field data and JSON are correct
 
@@ -28,40 +28,40 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app w
   - **(Bonus)Embedded map(Leaflet)**
   - **(Bonus)Local search function**
   - **Local/Global search switch and function**
-  - **Loading bar**
   - **Save and load user activities in localStorage**
+  - **Loading bar**
 
 # Difficulties
 - learning and coding timeline
-  - 1/29, 1/30, 1/31 read offical react hooks documents, react hooks blogs and watched react hook youtube tutorial videos
+  - 1/29, 1/30, 1/31 read official react hooks documents, react hooks blogs and watched react hook youtube tutorial videos
   - 2/1, 2/2, 2/3 rewrote [angular project](https://github.com/imgonewild/htc) to react hooks
   
 - react-leaflet can't show marker icon correctly
-  - It's an issue on official github, [solution](https://github.com/PaulLeCam/react-leaflet/issues/453) provided by programmer
+  - It's an issue on github, [solution](https://github.com/PaulLeCam/react-leaflet/issues/453) provided by programmer
   
 - Won't able to go to next page while using global search
-  - Because it would redirect to first page while using global search.
-  - Added `isGlobalAction` variable to determine if user change page in global search to solve this problem
+  - (Why?) Because it would redirect to first page while using global search.
+  - (Solution) Added `isGlobalAction` variable to determine if user change page in global search to solve this problem
 
 # Requirements
 
 - Use Ract, Vue or Angular
 - Data source:
-  - 台北市公園基本資料 [Open data](https://data.gov.tw/dataset/128366)
+  - [臺北市公園基本資料](https://data.gov.tw/dataset/128366)
 
 - According to [Figma](https://www.figma.com/file/uj8MJ9dZfIlJB2kzhkxjfK/Interview?node-id=10%3A3) layout
 - Show 12 data each page
 - RWD feature 
-  - bigger than 768px, display four data per line
-  - 768px ~ 500px, display three data per line
-  - less than 500px, display two data per line
+  - Display four data per line when window size > 768px
+  - Display three data per line when window size from 768px to 500px
+  - Display two data per line when window size < 500px
 
 - Data information
-  - Title: pm_name -> park name
-  - Description: pm_overview -> park overview
-  - Remark: pm_construction -> park constructed year
-  - Location: pm_location -> park location
-  - Transit: pm_transit -> ways to transit to park 
+  - Title: pm_name(Park name)
+  - Description: pm_overview(Park overview)
+  - Remark: pm_construction(Park constructed year)
+  - Location: pm_location(Park location)
+  - Transit: pm_transit(Ways to transit to park)
 
 - Pagination function
   - Click card and redirect to detail view page which including data information and use park id as index
