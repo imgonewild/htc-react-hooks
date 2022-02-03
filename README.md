@@ -2,7 +2,7 @@
 
 This project was generated with [React](https://github.com/facebook/react/) version 17.0.2
 
-This project is also available on [Codesandbox](https://codesandbox.io/s/htc-rwd-card-list-detail-view-h4504?file=/src/app/park-list/park-list.component.html).
+This project is also available on [Codesandbox](https://codesandbox.io/s/htc-react-hooks-fuv8d?file=/src/index.js).
 
 | ![Result](https://github.com/imgonewild/htc-react-hooks/blob/main/src/assets/htc-react-hooks.gif) |
 |:--:| 
