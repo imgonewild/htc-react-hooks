@@ -12,9 +12,9 @@ This project is also available on [Codesandbox](https://codesandbox.io/s/htc-rea
 
 Run `git clone https://github.com/imgonewild/htc-react-hooks.git` for downloading repository to local.
 
-Run `cd htc/ && npm install` for installing the dependencies in the local node_modules folder.
+Run `cd htc-react-hooks/ && npm install` for installing the dependencies in the local node_modules folder.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
 
 # Logics
 
@@ -24,9 +24,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app w
 
 - Verify the Detail View page field data and JSON are correct
 
-- **extra features:**
-  - **(Bonus)Embedded map(Leaflet)**
-  - **(Bonus)Local search function**
+- **Extra features:**
+  - **(Bonus) Embedded map(Leaflet)**
+  - **(Bonus) Local search function**
   - **Local/Global search switch and function**
   - **Save and load user activities in localStorage**
   - **Loading bar**
@@ -46,9 +46,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app w
 # Requirements
 
 - Use Ract, Vue or Angular
-- Data source:
-  - [臺北市公園基本資料](https://data.gov.tw/dataset/128366)
-
+- Data source: [臺北市公園基本資料](https://data.gov.tw/dataset/128366)
 - According to [Figma](https://www.figma.com/file/uj8MJ9dZfIlJB2kzhkxjfK/Interview?node-id=10%3A3) layout
 - Show 12 data each page
 - RWD feature 
@@ -75,8 +73,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app w
   - Logics
   - Difficulties
 
-- Use git version control
-- Uploaded project to GitHub
+- Use git version control and upload project to GitHub
 
 - Bonus:
   - Use embedded map(OpenStreetMap)
