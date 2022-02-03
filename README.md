@@ -16,21 +16,20 @@ Run `cd htc/ && npm install` for installing the dependencies in the local node_m
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
 
-# 專案設計邏輯
+# Logics
 
 - 確認 JSON 資料是否正確
 - 確認 RWD 需求
 - 確認 Detail View 欄位資料和 JSON 是否正確
 - **額外功能:**
+  - **Loading bar feature**
   - **Local/global search switch and function**
-  - **Save user activities in localStorage**
+  - **Save and load user activities in localStorage**
 
 # 專案執行時遇到痛點以及解法
-
-- 點下一頁後再點選 Card 會進入錯誤的 Detail view
-  - 將 card id 值依照真正的 Index 顯示, 原本 id 是 0 到 11
-- 在Codesandbox上執行會延遲(載入JSON時間過長)
-  - 加入Loading spinner(loader)
+- learning and coding timeline
+  - 1/29, 1/30, 1/31 read offical react hooks documents, react hooks blogs and watched react hook youtube tutorial videos
+  - 2/1 - 2/3 rewrote [angular project](https://github.com/imgonewild/htc) to react hooks
 - react-leaflet無法抓到Marker icon
   - 爬文後找到這是一個Issue，網友提供了[解法](https://github.com/PaulLeCam/react-leaflet/issues/453)
 - 使用global search後，無法到下一頁
