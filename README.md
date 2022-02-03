@@ -6,9 +6,9 @@ This project is also available on [Codesandbox](https://codesandbox.io/s/htc-rwd
 
 | ![Result](https://github.com/imgonewild/htc-react-hooks/blob/main/src/assets/htc-react-hooks.gif) |
 |:--:| 
-| 示意圖.gif |
+| Flow.gif |
 
-# 執行專案的方法,步驟,環境設定
+# Environment
 
 Run `git clone https://github.com/imgonewild/htc-react-hooks.git` for downloading repository to local.
 
@@ -18,55 +18,66 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app w
 
 # Logics
 
-- 確認 JSON 資料是否正確
-- 確認 RWD 需求
-- 確認 Detail View 欄位資料和 JSON 是否正確
-- **額外功能:**
-  - **Loading bar feature**
-  - **Local/global search switch and function**
+- Verify that the JSON data is correct
+
+- Verify RWD requirements
+
+- Verify the Detail View page field data and JSON are correct
+
+- **extra features:**
+  - **(Bonus)Embedded map(Leaflet)**
+  - **(Bonus)Local search function**
+  - **Local/Global search switch and function**
+  - **Loading bar**
   - **Save and load user activities in localStorage**
 
-# 專案執行時遇到痛點以及解法
+# Difficulties
 - learning and coding timeline
   - 1/29, 1/30, 1/31 read offical react hooks documents, react hooks blogs and watched react hook youtube tutorial videos
-  - 2/1 - 2/3 rewrote [angular project](https://github.com/imgonewild/htc) to react hooks
-- react-leaflet無法抓到Marker icon
-  - 爬文後找到這是一個Issue，網友提供了[解法](https://github.com/PaulLeCam/react-leaflet/issues/453)
-- 使用global search後，無法到下一頁
-  - 因為使用global search會把頁面自動跳轉到第一頁，所以我需要加上isGlobalAction來判斷是否在global search有切換頁面
+  - 2/1, 2/2, 2/3 rewrote [angular project](https://github.com/imgonewild/htc) to react hooks
+  
+- react-leaflet can't show marker icon correctly
+  - It's an issue on official github, [solution](https://github.com/PaulLeCam/react-leaflet/issues/453) provided by programmer
+  
+- Won't able to go to next page while using global search
+  - Because it would redirect to first page while using global search.
+  - Added `isGlobalAction` variable to determine if user change page in global search to solve this problem
 
-# 需求
+# Requirements
 
-- 請使用 Ract, Vue or Angular 進行開發
-- 請參照開放平台取得資料
-
+- Use Ract, Vue or Angular
+- Data source:
   - 台北市公園基本資料 [Open data](https://data.gov.tw/dataset/128366)
 
-- 根據[Figma](https://www.figma.com/file/uj8MJ9dZfIlJB2kzhkxjfK/Interview?node-id=10%3A3)進行 layout
-- 每頁需顯示 12 筆資料
-- 需支援 RWD，list view >768px 每行顯示四筆，768px~500px 每行顯示三筆，<500px 每行顯示兩筆
+- According to [Figma](https://www.figma.com/file/uj8MJ9dZfIlJB2kzhkxjfK/Interview?node-id=10%3A3) layout
+- Show 12 data each page
+- RWD feature 
+  - bigger than 768px, display four data per line
+  - 768px ~ 500px, display three data per line
+  - less than 500px, display two data per line
 
-- 每筆資料內包含
-  - Title: pm_name 公園名稱
-  - Description: pm_overview 公園概述
-  - Remark: pm_construction 建造年度
-  - Location: pm_location 地址
-  - Transit: pm_transit 交通方式
+- Data information
+  - Title: pm_name -> park name
+  - Description: pm_overview -> park overview
+  - Remark: pm_construction -> park constructed year
+  - Location: pm_location -> park location
+  - Transit: pm_transit -> ways to transit to park 
 
-- 需製作分頁功能
-  點擊卡片需跳至 Detail View，包含上述資料，park id 使用陣列 index 即可
+- Pagination function
+  - Click card and redirect to detail view page which including data information and use park id as index
+  
 - Route:
   - /parks (list view)
   - /parks/:park_id (detail view)
 
-- 提供一份 README:
-  - 執行專案的方法,步驟,環境設定
-  - 專案設計邏輯
-  - 專案執行時遇到痛點以及解法
+- Provide README:
+  - Environment
+  - Logics
+  - Difficulties
 
-- 使用 git 來做整個專案的版本控管
-- 請將專案上傳到 GitHub
+- Use git version control
+- Uploaded project to GitHub
 
-- 加分項目
-  - 內嵌地圖: OpenStreetMap
-  - 搜尋功能, 僅 local search 即可
+- Bonus:
+  - Use embedded map(OpenStreetMap)
+  - local search function
