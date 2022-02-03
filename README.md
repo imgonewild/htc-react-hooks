@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# hTC (RWD card list & view details with global search & storage functions)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was generated with [React](https://github.com/facebook/react/) version 17.0.2
 
-## Available Scripts
+This project is also available on [Codesandbox](https://codesandbox.io/s/htc-rwd-card-list-detail-view-h4504?file=/src/app/park-list/park-list.component.html).
 
-In the project directory, you can run:
+| ![Result](https://github.com/imgonewild/htc-react-hooks/blob/main/src/assets/htc-react-hooks.gif) |
+|:--:| 
+| 示意圖.gif |
 
-### `npm start`
+# 執行專案的方法,步驟,環境設定
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Run `git clone https://github.com/imgonewild/htc-react-hooks.git` for downloading repository to local.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Run `cd htc/ && npm install` for installing the dependencies in the local node_modules folder.
 
-### `npm test`
+Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# 專案設計邏輯
 
-### `npm run build`
+- 確認 JSON 資料是否正確
+- 確認 RWD 需求
+- 確認 Detail View 欄位資料和 JSON 是否正確
+- **額外功能:**
+  - **Local/global search switch and function**
+  - **Save user activities in localStorage**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# 專案執行時遇到痛點以及解法
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 點下一頁後再點選 Card 會進入錯誤的 Detail view
+  - 將 card id 值依照真正的 Index 顯示, 原本 id 是 0 到 11
+- 在Codesandbox上執行會延遲(載入JSON時間過長)
+  - 加入Loading spinner(loader)
+- react-leaflet無法抓到Marker icon
+  - 爬文後找到這是一個Issue，網友提供了[解法](https://github.com/PaulLeCam/react-leaflet/issues/453)
+- 使用global search後，無法到下一頁
+  - 因為使用global search會把頁面自動跳轉到第一頁，所以我需要加上isGlobalAction來判斷是否在global search有切換頁面
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# 需求
 
-### `npm run eject`
+- 請使用 Ract, Vue or Angular 進行開發
+- 請參照開放平台取得資料
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  - 台北市公園基本資料 [Open data](https://data.gov.tw/dataset/128366)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 根據[Figma](https://www.figma.com/file/uj8MJ9dZfIlJB2kzhkxjfK/Interview?node-id=10%3A3)進行 layout
+- 每頁需顯示 12 筆資料
+- 需支援 RWD，list view >768px 每行顯示四筆，768px~500px 每行顯示三筆，<500px 每行顯示兩筆
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- 每筆資料內包含
+  - Title: pm_name 公園名稱
+  - Description: pm_overview 公園概述
+  - Remark: pm_construction 建造年度
+  - Location: pm_location 地址
+  - Transit: pm_transit 交通方式
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- 需製作分頁功能
+  點擊卡片需跳至 Detail View，包含上述資料，park id 使用陣列 index 即可
+- Route:
+  - /parks (list view)
+  - /parks/:park_id (detail view)
 
-## Learn More
+- 提供一份 README:
+  - 執行專案的方法,步驟,環境設定
+  - 專案設計邏輯
+  - 專案執行時遇到痛點以及解法
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 使用 git 來做整個專案的版本控管
+- 請將專案上傳到 GitHub
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 加分項目
+  - 內嵌地圖: OpenStreetMap
+  - 搜尋功能, 僅 local search 即可
