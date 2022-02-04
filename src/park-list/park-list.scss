@@ -184,10 +184,7 @@ $main-background-color: #c4c4c4;
         .tab {
             padding-left: 1em;
         }
-        .start-page,
-        .end-page,
-        .prev-page,
-        .next-page {
+        .link {
             &:hover {
                 cursor: pointer;
                 text-decoration: underline;

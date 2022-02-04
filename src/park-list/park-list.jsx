@@ -1,41 +1,34 @@
-/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import parksData from "../assets/parks.json";
 import { useDebouncedEffect } from "../useDebouncedEffect";
+import originParksData from "../assets/parks.json";
 import "./park-list.scss";
 
 function ParkList() {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [currPage, setCurrPage] = useState(1);
     const [totalPage, setTotalPage] = useState();
-    const [isGlobalAction, setIsGlobalAction] = useState(false);
     const [highlightIndex, setHighlightIndex] = useState([]);
-    const [search, setSearch] = useState("");
+    const [searchVal, setSearchVal] = useState("");
     const [isSearch, setIsSearch] = useState(false);
     const [searchMethod, setSearchMethod] = useState("local");
-    const [parks, setParks] = useState(parksData);
+    const [parksData, setParksData] = useState(originParksData);
     const cardPerPage = 12;
-    const len = parksData.length / cardPerPage;
+    const originTotalPage = originParksData.length / cardPerPage;
 
-    useDebouncedEffect(() => searchOnchange(), [search], 250);
+    useDebouncedEffect(() => searchOnchange(), [searchVal], 250);
 
     useEffect(() => {
-        setLoading(false);
-        const search_key = localStorage.getItem("search_key");
-        const search_method = localStorage.getItem("search_method");
+        setIsLoading(false);
+        setDefaultTotalPage(originTotalPage);
+        const searchValue = localStorage.getItem("search_value");
+        const searchMethod = localStorage.getItem("search_method");
         const currentPage = localStorage.getItem("current_page");
-
-        if (search_key !== null) setSearch(search_key);
-        if (search_method !== null) setSearchMethod(search_method);
+        if (searchValue !== null) setSearchVal(searchValue);
+        if (searchMethod !== null) setSearchMethod(searchMethod);
         if (currentPage !== null) setCurrPage(currentPage);
-
-        if (search_method === "global" && currentPage !== 1)
-            setIsGlobalAction(true);
-
-        setDefaultTotalPage(len);
     }, []);
 
     useEffect(() => {
@@ -55,73 +48,64 @@ function ParkList() {
             return;
         }
         setHighlightIndex([]);
-        setIsGlobalAction(true);
     }
 
     function searchOnchange() {
         setHighlightIndex([]);
-        if (search === "" || search.length === 1) {
-            localStorage.removeItem("search_key");
-            localStorage.removeItem("current_page");
-            setParks(() => parksData);
+        if (searchVal === "" || searchVal.length === 1) {
+            setParksData(originParksData);
             setIsSearch(false);
-            setDefaultTotalPage(len);
+            setDefaultTotalPage(originTotalPage);
             return;
         }
 
+        setIsSearch(true);
         if (searchMethod === "local") {
-            setIsSearch(true);
-            setIsGlobalAction(false);
-            parksData
-                .slice((currPage - 1) * 12, currPage * 12)
-                .filter((obj, i) => {
-                    if (
-                        obj["pm_name"].includes(search) ||
-                        obj["pm_construction"].includes(search)
-                    ) {
-                        setHighlightIndex((highlightIndex) => [
-                            ...highlightIndex,
-                            i,
-                        ]);
-                        return obj;
-                    }
-                });
-            setDefaultTotalPage(len);
+            filter(originParksData.slice((currPage - 1) * 12, currPage * 12));
+            setDefaultTotalPage(originTotalPage);
         } else if (searchMethod === "global") {
-            setIsSearch(true);
-            if (currPage !== 1 && isGlobalAction === false) setCurrPage(1);
-            const globalData = parksData.filter((obj, i) => {
-                if (
-                    obj["pm_name"].includes(search) ||
-                    obj["pm_construction"].includes(search)
-                ) {
-                    setHighlightIndex((highlightIndex) => [
-                        ...highlightIndex,
-                        i,
-                    ]);
-                    return obj;
-                }
-                return false;
-            });
-            setParks(() => globalData);
+            const globalData = filter(originParksData);
+            setParksData(globalData);
 
-            const len = globalData.length / cardPerPage;
-            setDefaultTotalPage(len);
+            let globalTotalPage = globalData.length / cardPerPage;
+            if (globalTotalPage % 1 !== 0)
+                globalTotalPage = Math.floor(globalTotalPage) + 1;
+
+            if (currPage > globalTotalPage) setCurrPage(1);
+
+            setDefaultTotalPage(globalTotalPage);
         }
     }
 
-    function setDefaultTotalPage(len) {
-        if (len % 1 === 0) {
-            setTotalPage(len);
+    function filter(data) {
+        return data.filter((obj, index) => {
+            if (
+                obj["pm_name"].includes(searchVal) ||
+                obj["pm_construction"].includes(searchVal)
+            ) {
+                setHighlightIndex((highlightIndex) => [
+                    ...highlightIndex,
+                    index,
+                ]);
+                return obj;
+            } else {
+                return false;
+            }
+        });
+    }
+
+    function setDefaultTotalPage(totalPage) {
+        if (totalPage % 1 === 0) {
+            setTotalPage(totalPage);
         } else {
-            setTotalPage(Math.floor(len) + 1);
+            setTotalPage(Math.floor(totalPage) + 1);
         }
     }
 
     function cardClick(method, index) {
-        localStorage.setItem("current_page", currPage);
-        localStorage.setItem("search_key", search);
         localStorage.setItem("search_method", searchMethod);
+        localStorage.setItem("search_value", searchVal);
+        localStorage.setItem("current_page", currPage);
 
         if (method === "local" || (method === "global" && isSearch === false))
             navigate(`/park-view/${(currPage - 1) * 12 + index}`);
@@ -131,10 +115,42 @@ function ParkList() {
             );
     }
 
+    function showCard(method) {
+        let data;
+        if (method === "local") data = originParksData;
+        else if (method === "global") data = parksData;
+        return data
+            .slice((currPage - 1) * 12, currPage * 12)
+            .map((r, index) => (
+                <div
+                    className={
+                        method === "local"
+                            ? highlightIndex.includes(index)
+                                ? "card highlight"
+                                : "card no-highlight"
+                            : isSearch === true
+                            ? "card highlight"
+                            : "card no-highlight"
+                    }
+                    key={index}
+                    onClick={() => cardClick(method, index)}
+                >
+                    <div className="header">
+                        <div className="title">{r.pm_name}</div>
+                        <div className="remark text-center">
+                            {r.pm_construction}
+                        </div>
+                    </div>
+
+                    <div className="desc">{r.pm_overview}</div>
+                </div>
+            ));
+    }
+
     return (
         <>
             <div className="park-list-wrapper">
-                {loading === true && <div className="loader"></div>}
+                {isLoading === true && <div className="loader"></div>}
 
                 <div className="container">
                     <header className="header">
@@ -170,76 +186,17 @@ function ParkList() {
                         type="text"
                         className="input-search"
                         placeholder="Search"
-                        value={search}
+                        value={searchVal}
                         onChange={(e) => {
-                            setSearch(e.target.value);
+                            setSearchVal(e.target.value);
                         }}
                     />
-                    <div className="card-columns">
-                        {searchMethod === "local" &&
-                            parksData
-                                .slice((currPage - 1) * 12, currPage * 12)
-                                .map((r, index) => (
-                                    <div
-                                        className={
-                                            highlightIndex.includes(index)
-                                                ? "card highlight"
-                                                : "card no-highlight"
-                                        }
-                                        key={index}
-                                        onClick={() =>
-                                            cardClick("local", index)
-                                        }
-                                    >
-                                        <div className="header">
-                                            <div className="title">
-                                                {r.pm_name}
-                                            </div>
-                                            <div className="remark text-center">
-                                                {r.pm_construction}
-                                            </div>
-                                        </div>
-
-                                        <div className="desc">
-                                            {r.pm_overview}
-                                        </div>
-                                    </div>
-                                ))}
-                        {searchMethod === "global" &&
-                            parks
-                                .slice((currPage - 1) * 12, currPage * 12)
-                                .map((r, index) => (
-                                    <div
-                                        className={
-                                            isSearch === true
-                                                ? "card highlight"
-                                                : "card no-highlight"
-                                        }
-                                        key={index}
-                                        onClick={() =>
-                                            cardClick("global", index)
-                                        }
-                                    >
-                                        <div className="header">
-                                            <div className="title">
-                                                {r.pm_name}
-                                            </div>
-                                            <div className="remark text-center">
-                                                {r.pm_construction}
-                                            </div>
-                                        </div>
-
-                                        <div className="desc">
-                                            {r.pm_overview}
-                                        </div>
-                                    </div>
-                                ))}
-                    </div>
+                    <div className="card-columns">{showCard(searchMethod)}</div>
                 </div>
 
                 <footer className="footer text-center">
                     <span
-                        className={currPage !== 1 ? "start-page" : ""}
+                        className={currPage !== 1 ? "link" : ""}
                         onClick={() => loadPage("start")}
                     >
                         {"|< "}
@@ -248,7 +205,7 @@ function ParkList() {
                     <span className="tab"></span>
 
                     <span
-                        className={currPage !== 1 ? "prev-page" : ""}
+                        className={currPage !== 1 ? "link" : ""}
                         onClick={() => loadPage("prev")}
                     >
                         {"<"}
@@ -261,7 +218,7 @@ function ParkList() {
                     <span className="tab"></span>
 
                     <span
-                        className={currPage !== totalPage ? "next-page" : ""}
+                        className={currPage !== totalPage ? "link" : ""}
                         onClick={() => loadPage("next")}
                     >
                         {">"}
@@ -270,7 +227,7 @@ function ParkList() {
                     <span className="tab"></span>
 
                     <span
-                        className={currPage !== totalPage ? "end-page" : ""}
+                        className={currPage !== totalPage ? "link" : ""}
                         onClick={() => loadPage("end")}
                     >
                         {" >|"}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import parksData from "../assets/parks.json";
+import originParksData from "../assets/parks.json";
 import Leaflet from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -15,34 +15,34 @@ Leaflet.Icon.Default.mergeOptions({
 
 function ParkView() {
     const navigate = useNavigate();
-    const parks = parksData;
     const { index } = useParams();
-    const [loading, setLoading] = useState(true);
-    const data = parks[index];
-    const position = [data.pm_lat, data.pm_lon];
-    let parkName = data.pm_name;
-    let desc = data.pm_overview;
-    let location = data.pm_location;
-    let transit = data.pm_transit;
+    const [isLoading, setIsLoading] = useState(true);
+    const park = originParksData[index];
+    const position = [park.pm_lat, park.pm_lon];
+
+    const parkName = park.pm_name;
+    const desc = park.pm_overview;
+    const location = park.pm_location;
+    const transit = park.pm_transit;
 
     useEffect(() => {
-        setLoading(false);
+        setIsLoading(false);
     }, []);
 
     return (
         <>
             <div className="park-view-wrapper">
                 <header className="header">
-                    <span className="back" onClick={() => navigate("/")}>
+                    <span className="link" onClick={() => navigate("/")}>
                         {"<Back"}
                     </span>
                     <span>{parkName}</span>
                     <span className="tab"></span>
                 </header>
 
-                {loading === true && <div className="loader"></div>}
+                {isLoading === true && <div className="loader"></div>}
 
-                <div className={loading === false ? "content" : "hidden"}>
+                <div className={"container"}>
                     <div className="desc">{desc}</div>
                     <MapContainer
                         style={{ height: "356px" }}
