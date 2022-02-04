@@ -19,9 +19,7 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
 # Logics
 
 - Verify that the JSON data is correct
-
 - Verify RWD requirement
-
 - Verify the Detail View page field data and JSON are correct
 
 # **Extra features**
@@ -29,20 +27,20 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
   - **(Bonus)** Local search function
   - Local/Global search switch and function
   - Debounce for search input
-  - Store user activities in localStorage
+  - Store user activities in localStorage(Search value, Search method, Current page)
   - Show Loading bar while fetching json data
 
 # Difficulties
-- learning and coding timeline
+- Learning and coding timeline
   - 1/29, 1/30, 1/31 read official react hooks documents, blogs and watched youtube tutorial videos
   - 2/1, 2/2, 2/3 rewrote [angular project](https://github.com/imgonewild/htc) to react hooks
   
-- react-leaflet can't show marker icon correctly
-  - It's an issue on github, [solution](https://github.com/PaulLeCam/react-leaflet/issues/453) provided by programmer
+- Leaflet can't show marker icon correctly
+  - It's an issue on github, [solution](https://github.com/PaulLeCam/react-leaflet/issues/453)
   
-- Won't able to go to next page while using global search
-  - (Why?) Because it would redirect to first page while using global search.
-  - (Solution) Added `isGlobalAction` variable to determine if user change page in global search.
+- Click next page and click card would show wrong park details
+  - (Why) Because the index of park would be the same(0 to 11) while clicking next page
+  - (Solution) Use slice method to load current page card index
 
 # Requirements
 
