@@ -53,6 +53,8 @@ function ParkList() {
     function searchOnchange() {
         setHighlightIndex([]);
         if (searchVal === "" || searchVal.length === 1) {
+            localStorage.removeItem("search_value");
+            localStorage.removeItem("current_page");
             setParksData(originParksData);
             setIsSearch(false);
             setDefaultTotalPage(originTotalPage);
@@ -108,11 +110,9 @@ function ParkList() {
         localStorage.setItem("current_page", currPage);
 
         if (method === "local" || (method === "global" && isSearch === false))
-            navigate(`/park-view/${(currPage - 1) * 12 + index}`);
+            navigate(`/parks/${(currPage - 1) * 12 + index}`);
         else if (method === "global" && isSearch === true)
-            navigate(
-                `/park-view/${highlightIndex[(currPage - 1) * 12 + index]}`
-            );
+            navigate(`/parks/${highlightIndex[(currPage - 1) * 12 + index]}`);
     }
 
     function showCard(method) {

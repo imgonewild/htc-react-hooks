@@ -11,7 +11,7 @@ render(
     <BrowserRouter>
         <Routes>
             <Route path="/parks" element={<ParkList />} />
-            <Route path="/park-view/:index" element={<ParkView />} />
+            <Route path="/parks/:index" element={<ParkView />} />
             <Route path="*" element={<Navigate replace to="/parks" />} />
         </Routes>
     </BrowserRouter>,
