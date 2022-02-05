@@ -61,7 +61,7 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app 
   - Transit: pm_transit (Ways to transit to park)
 
 - Pagination function
-  - Click card and redirect to detail view page which including data information and use park id as index
+  - Click card and redirect to detail view page which including data information and use index as park id
   
 - Route:
   - /parks (list view)
